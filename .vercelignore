@@ -1,9 +1,23 @@
+
+# Python virtual environments
 .venv/
 venv/
 env/
+
+# Python cache
 __pycache__/
 *.pyc
 .ipynb_checkpoints/
-frontend/node_modules/
-frontend/dist/
+
+# Frontend (deployed separately)
+frontend/
+
+# Git
 .git/
+
+# Training files (not needed for inference)
+modeltraining.ipynb
+tunemodel.py
+
+# Dataset (exclude only if API doesn't use it)
+data.csv
