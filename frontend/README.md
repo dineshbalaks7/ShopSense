@@ -24,6 +24,18 @@ A responsive React + Vite frontend for the Online Shopping Purchase Intention De
 
 5. Open the Vite URL printed in the terminal, normally `http://localhost:5173`.
 
+## Deploy to Vercel
+
+Import the repository as a Vercel project. The root `vercel.json` builds this frontend and serves `frontend/dist`. You can also set `frontend` as the Vercel project root; its local `vercel.json` supports that layout too.
+
+In the Vercel project settings, add this environment variable before deploying:
+
+```text
+VITE_API_URL=https://your-deployed-api.example.com
+```
+
+The API URL must be publicly reachable over HTTPS. After deployment, add the Vercel domain to the FastAPI CORS `allow_origins` list. The frontend is a single-page app, so the Vercel rewrite keeps direct navigation working.
+
 ## FastAPI CORS
 Add this after `app = FastAPI(...)` in your `main.py`:
 
