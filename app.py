@@ -22,7 +22,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:5173",
-        "https://shop-sense-azure.vercel.app",
+        "https://shop-sense-mu.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
