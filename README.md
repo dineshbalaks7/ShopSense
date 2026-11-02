@@ -261,8 +261,7 @@ Configure CORS to allow your deployed frontend domain.
 ## Author
 
 **Dinesh Bala KS**
-
-B.Tech – Artificial Intelligence and Data Science
+dineshbalaks@gmail.com
 
 ---
 
