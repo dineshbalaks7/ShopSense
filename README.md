@@ -23,15 +23,17 @@
 
 ShopSense is an AI-powered web application designed to predict whether a customer is likely to make a purchase based on their online shopping session behaviour.
 
-The system uses a trained Decision Tree classification model and integrates it with a FastAPI backend and React frontend to deliver real-time predictions and purchase probability.
+The application uses a trained Decision Tree classification model integrated with a FastAPI backend and React frontend to deliver real-time predictions and purchase probability.
+
+The primary goal is to demonstrate how machine learning can be integrated into a modern web application to analyze customer behaviour and support data-driven e-commerce decisions.
 
 ## Live Application
 
 | Component | URL |
 |---|---|
-| Frontend | https://shop-sense-mu.vercel.app/ |
+| Frontend Application | https://shop-sense-mu.vercel.app/ |
 | Backend API | https://shopsense-api-m8sx.onrender.com |
-| Swagger Documentation | https://shopsense-api-m8sx.onrender.com/docs |
+| Swagger API Documentation | https://shopsense-api-m8sx.onrender.com/docs |
 
 ## Key Features
 
@@ -41,13 +43,14 @@ The system uses a trained Decision Tree classification model and integrates it w
 - Interactive React user interface.
 - FastAPI REST API integration.
 - Automated data preprocessing pipeline.
-- Optimized Decision Tree model using GridSearchCV.
-- Cloud deployment with Vercel and Render.
+- Decision Tree model optimization using GridSearchCV.
+- Prediction results with class probabilities.
+- Cloud deployment using Vercel and Render.
 
 ## Technology Stack
 
 <p align="center">
-  <img src="https://skillicons.dev/icons?i=python,fastapi,react,vite,sklearn,pandas,numpy,git,github" alt="Technology stack" />
+  <img src="https://skillicons.dev/icons?i=python,fastapi,react,vite,git,github" alt="Technology stack" />
 </p>
 
 | Category | Technologies |
@@ -56,13 +59,17 @@ The system uses a trained Decision Tree classification model and integrates it w
 | Backend | Python, FastAPI |
 | Machine Learning | Scikit-learn |
 | Data Processing | Pandas, NumPy |
-| Preprocessing | MinMaxScaler, OneHotEncoder |
+| Data Preprocessing | MinMaxScaler, OneHotEncoder |
 | Algorithm | Decision Tree Classifier |
 | Hyperparameter Tuning | GridSearchCV |
-| Model Storage | Pickle |
+| Model Serialization | Pickle |
+| API Testing | Swagger UI |
 | Deployment | Vercel, Render |
+| Version Control | Git, GitHub |
 
 ## Machine Learning Workflow
+
+The project follows a structured machine learning workflow, starting from dataset exploration to model deployment.
 
 ```mermaid
 flowchart TD
@@ -82,7 +89,7 @@ flowchart TD
 
 ## Dataset Information
 
-The project uses an online shopping customer behaviour dataset.
+The project uses an online shopping customer behaviour dataset containing session-level information.
 
 | Description | Value |
 |---|---:|
@@ -91,18 +98,25 @@ The project uses an online shopping customer behaviour dataset.
 | Training Records | 9,864 |
 | Testing Records | 2,466 |
 
-## Model Performance
+### Data Preprocessing
 
-The tuned Decision Tree model achieved the following results on the test dataset:
+The following preprocessing techniques are used:
 
-| Evaluation Metric | Score |
-|---|---:|
-| Accuracy | 89.62% |
-| Precision | 77.39% |
-| Recall | 46.60% |
-| F1-Score | 58.17% |
+- Data cleaning and exploration.
+- Handling categorical features using OneHotEncoder.
+- Scaling numerical features using MinMaxScaler.
+- Feature transformation using Scikit-learn pipelines.
+- Splitting data into training and testing datasets.
 
-### Model Configuration
+## Model Development
+
+ShopSense uses a Decision Tree Classifier to predict customer purchase behaviour.
+
+### Hyperparameter Optimization
+
+GridSearchCV is used to identify suitable hyperparameters and improve model performance.
+
+Best model configuration:
 
 ```python
 DecisionTreeClassifier(
@@ -113,20 +127,50 @@ DecisionTreeClassifier(
 )
 ```
 
+### Model Performance
+
+The tuned Decision Tree model achieved the following results on the test dataset.
+
+| Evaluation Metric | Score |
+|---|---:|
+| Accuracy | 89.62% |
+| Precision | 77.39% |
+| Recall | 46.60% |
+| F1-Score | 58.17% |
+
+*These metrics represent the tuned model's reported test-set performance.*
+
 ## System Architecture
+
+ShopSense follows a frontend-backend architecture in which the React application communicates with the FastAPI backend through REST API requests.
 
 ```mermaid
 flowchart LR
-    A[User] --> B[React + Vite]
-    B -->|HTTP Request| C[FastAPI]
-    C --> D[Preprocessing Pipeline]
+    A[User] --> B[React + Vite Frontend]
+    B -->|HTTP Request| C[FastAPI Backend]
+    C --> D[Data Preprocessing Pipeline]
     D --> E[Decision Tree Model]
-    E --> F[Prediction]
+    E --> F[Prediction Result]
     F --> G[Purchase Probability]
     G --> B
+    B --> H[Display Results]
 ```
 
-## API Endpoints
+### Prediction Process
+
+1. The user enters customer shopping-session information.
+2. The React frontend sends the input to the FastAPI backend.
+3. FastAPI validates the input using Pydantic.
+4. The preprocessing pipeline transforms the input features.
+5. The trained Decision Tree model generates a prediction.
+6. The backend calculates purchase probability and class probabilities.
+7. The frontend displays the prediction results.
+
+## API Documentation
+
+ShopSense exposes its machine learning model through REST API endpoints using FastAPI.
+
+### Available Endpoints
 
 | Method | Endpoint | Description |
 |---|---|---|
@@ -134,7 +178,17 @@ flowchart LR
 | GET | `/health` | Backend health check |
 | POST | `/predict` | Customer purchase prediction |
 
-### Sample Prediction Response
+### Prediction Endpoint
+
+**Endpoint:**
+
+```http
+POST /predict
+```
+
+The endpoint accepts customer shopping-session features and returns a purchase prediction with probability information.
+
+### Sample API Response
 
 ```json
 {
@@ -151,6 +205,12 @@ flowchart LR
 
 *Illustrative response. Actual predictions depend on customer input.*
 
+### Swagger Documentation
+
+Test and explore the API endpoints using FastAPI Swagger UI:
+
+https://shopsense-api-m8sx.onrender.com/docs
+
 ## Project Structure
 
 ```text
@@ -159,6 +219,7 @@ ShopSense/
 ├── ml_model/
 │   ├── app.py
 │   ├── requirements.txt
+│   │
 │   └── models/
 │       └── decision_tree_pipeline.pkl
 │
@@ -167,16 +228,21 @@ ShopSense/
 │   ├── src/
 │   │   ├── components/
 │   │   ├── App.jsx
-│   │   └── main.jsx
+│   │   ├── main.jsx
+│   │   └── ...
+│   │
 │   ├── package.json
-│   └── vite.config.js
+│   ├── vite.config.js
+│   └── index.html
 │
 └── README.md
 ```
 
 ## Installation and Setup
 
-### 1. Clone Repository
+Follow these steps to run ShopSense locally.
+
+### 1. Clone the Repository
 
 ```bash
 git clone YOUR_GITHUB_REPOSITORY_URL
@@ -185,83 +251,147 @@ cd ShopSense
 
 ### 2. Backend Setup
 
+Navigate to the backend directory:
+
 ```bash
 cd ml_model
+```
 
+Create a Python virtual environment:
+
+```bash
 python -m venv venv
+```
 
-# Windows
+Activate the virtual environment.
+
+**Windows:**
+
+```bash
 venv\Scripts\activate
+```
 
-# Install dependencies
+**Linux / macOS:**
+
+```bash
+source venv/bin/activate
+```
+
+Install the required dependencies:
+
+```bash
 pip install -r requirements.txt
+```
 
-# Run FastAPI
+Start the FastAPI application:
+
+```bash
 uvicorn app:app --reload
 ```
 
-Backend URL:
+Backend runs at:
 
-`http://127.0.0.1:8000`
+```text
+http://127.0.0.1:8000
+```
 
 ### 3. Frontend Setup
 
+Open another terminal and navigate to the frontend directory:
+
 ```bash
 cd frontend
+```
 
+Install the dependencies:
+
+```bash
 npm install
 ```
 
-Create a `.env` file:
+Create a `.env` file inside the frontend directory:
 
 ```env
 VITE_API_URL=http://127.0.0.1:8000
 ```
 
-Start the frontend:
+Start the React development server:
 
 ```bash
 npm run dev
 ```
 
-Frontend URL:
+Frontend runs at:
 
-`http://localhost:5173`
+```text
+http://localhost:5173
+```
 
 ## Deployment
 
-| Service | Platform |
-|---|---|
-| Frontend | Vercel |
-| Backend | Render |
+ShopSense uses separate cloud platforms for frontend and backend deployment.
 
-### Frontend Environment Variable
+### Frontend Deployment – Vercel
+
+The React + Vite frontend is deployed using Vercel.
+
+Production environment variable:
 
 ```env
 VITE_API_URL=https://shopsense-api-m8sx.onrender.com
 ```
 
-### Backend Start Command
+Live application:
+
+https://shop-sense-mu.vercel.app/
+
+### Backend Deployment – Render
+
+The FastAPI backend is deployed using Render.
+
+Start command:
 
 ```bash
 uvicorn app:app --host 0.0.0.0 --port $PORT
 ```
 
-Configure CORS to allow your deployed frontend domain.
+Ensure that the backend CORS configuration allows requests from the deployed frontend domain.
+
+Backend URL:
+
+https://shopsense-api-m8sx.onrender.com
+
+## Security Considerations
+
+- Sensitive environment variables should never be committed to GitHub.
+- API credentials and database connection strings should be stored as environment variables.
+- Frontend environment variables prefixed with `VITE_` are publicly accessible.
+- CORS should be configured to allow only trusted frontend origins.
+- Avoid uploading private datasets or confidential customer information.
 
 ## Future Enhancements
 
 - Compare multiple machine learning algorithms.
-- Improve recall through class imbalance handling.
-- Add explainable AI using SHAP.
+- Improve recall using class imbalance handling techniques.
+- Integrate Explainable AI using SHAP.
 - Introduce customer segmentation.
-- Build interactive purchase behaviour analytics.
-- Integrate additional customer behaviour datasets.
+- Build interactive customer behaviour analytics.
+- Integrate additional shopping behaviour datasets.
+- Explore advanced ensemble learning techniques.
 
 ## Author
 
 **Dinesh Bala KS**
-dineshbalaks@gmail.com
+
+B.Tech – Artificial Intelligence and Data Science
+
+Email: dineshbalaks@gmail.com
+
+<p align="center">
+  <a href="https://shop-sense-mu.vercel.app/">
+    Visit ShopSense
+  </a>
+</p>
 
 ---
 
